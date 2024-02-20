@@ -21,7 +21,7 @@ _eputs(info->argv[0]);
 
 
 /**
-* print_decimal - prints a decimal number
+* print_decimal - prints a decimal number (base 10)
 * @n: number to be printed
 * @fd: file descriptor
 * Return: void
@@ -29,19 +29,90 @@ _eputs(info->argv[0]);
 
 void print_decimal(unsigned int n, int fd)
 {
-	unsigned int num = n;
+int (*__putchar)(char) = _putchar;
+unsigned int num;
+unsigned int num2;
+int i;
+int c = 0;
+if (fd == STDERR_FILENO)
+{
+__putchar = _eputchar;
+}
+if (n < 0)
+{
+num = -n;
+__putchar('-');
+c++;
+}
+else
+{
+num = n;
+}
+num2 = num;
+for (i = 1000000000; i > 0; i /= 10)
+{
+if (num2 / i != 0)
+{
+__putchar((num2 / i) + '0');
+c++;
+}
+num2 %= i;
+}
+__putchar(num2 + '0');
+c++;
+return (c);
+}
 
-	unsigned int div = 1;
+/**
+* number_conversion - converts a number to a string
+* @num: number to be converted
+* @base: base of the number
+* @flag: flag to indicate if the number is signed
+* Return: pointer to the resulting string
+*/
 
-	char c;
+char *number_conversion(long int num, int base, int flag)
+{
+static char *array;
+static char buffer[50];
+char sign = 0;
+char *ptr;
+unsigned long n = num;
 
-	while (num / div > 9)
-		div *= 10;
-	while (div)
-	{
-		c = (num / div) + '0';
-		write(fd, &c, 1);
-		num %= div;
-		div /= 10;
-	}
+if (flag == 1 && base == 10 && num < 0)
+{
+sign = '-';
+n = -num;
+}
+array = flag & CONVER_TO_LOWER ? "0123456789abcdef" : "0123456789ABCDEF";
+ptr = &buffer[49];
+*ptr = '\0';
+
+do {
+*--ptr = array[n % base];
+n /= base;
+} while (n != 0);
+if (sign)
+*--ptr = sign;
+return (ptr);
+}
+
+
+/**
+* remove_comments - removes comments from a string
+* @str: string to be processed
+* Return: void
+*/
+
+void remove_comments(char *str)
+{
+int i;
+for (i = 0; str[i] != '\0'; i++)
+{
+if (str[i] == '#')
+{
+str[i] = '\0';
+return;
+}
+}
 }

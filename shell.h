@@ -46,7 +46,6 @@ extern char **environ;
 typedef struct liststr
 {
 	char *str;
-
 	struct liststr *next;
 	int num;
 
@@ -101,6 +100,7 @@ typedef struct passinfo
 	int line_flag;
 
 	list_t *history;
+
 	int history_count;
 
 	char *file_name;
@@ -113,8 +113,8 @@ typedef struct passinfo
 
 } passinfo_t;
 
-#define PASSINFO_INIT {NULL, NULL, 0, NULL, NULL, 0, NULL, 0, NULL, 0, 0, 0, \
-NULL, 0, 0, NULL, NULL, 0, 0}
+#define PASSINFO_INIT {NULL, NULL, 0, NULL, NULL, 0, \
+NULL, 0, NULL, 0, 0, 0, NULL, 0, NULL, NULL, 0, 0}
 
 /**
 * struct builtins - struct for builtins
@@ -165,3 +165,29 @@ int _erratoi(char *s);
 /* utils 2 */
 void print_error(passinfo_t *info, char *msg);
 int print_decimal(int n, int fd);
+char *number_conversion(long int num, int base, int flag);
+void remove_comments(char *str);
+
+/* list handlers */
+list_t *add_node(list_t **head, char *str, int num);
+void free_list(list_t **head);
+size_t print_list_s(list_t *head);
+size_t list_len(list_t *head);
+list_t *add_node_end(list_t **head, char *str, int num);
+
+/* list handlers 2 */
+size_t print_list(list_t *head);
+list_t *node_starts_with(list_t *head, char *start, char c);
+char **list_to_array(list_t *head);
+size_t node_by_index(list_t *head, list_t *target);
+int delete_node_at_index(list_t **head, unsigned int index);
+
+/* error handlers */
+void _eputs(char *str);
+int _eputchar(char c);
+int _putfd(int fd, char c);
+int _putsfd(int fd, char *str);
+
+
+
+#endif
