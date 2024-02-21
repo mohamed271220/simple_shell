@@ -155,6 +155,12 @@ void _free(char **ptr);
 void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
 int _free2(char **ptr);
 
+/* env handlers */
+int print_env(passinfo_t *info);
+char *get_env(passinfo_t *info, char *name);
+int set_env(passinfo_t *info);
+int remove_env(passinfo_t *info);
+int populate_env(passinfo_t *info);
 /* utils */
 int is_sh_mode(passinfo_t *info);
 int is_delim(char c, char *delim);
@@ -188,6 +194,10 @@ int _eputchar(char c);
 int _putfd(int fd, char c);
 int _putsfd(int fd, char *str);
 
+/* info handlers */
+void clear(passinfo_t *info);
+void set_info(passinfo_t *info, char **argv);
+void free_info(passinfo_t *info, int free_env);
 
 
 #endif
