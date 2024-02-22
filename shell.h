@@ -134,6 +134,23 @@ typedef struct builtins
 void _puts(char *str);
 void _putchar(char c);
 
+
+/* core navigation */
+int _cd(passinfo_t *info);
+int _exit(passinfo_t *info);
+int _help(passinfo_t *info);
+int show_history(passinfo_t *info);
+int show_alias(passinfo_t *info);
+
+/* alias */
+int set_alias(passinfo_t *info, char *name);
+int remove_alias(passinfo_t *info, char *name);
+int print_alias(list_t *node);
+int _alias(passinfo_t *info);
+
+/* cmd */
+int is_executable(passinfo_t *info, char *path);
+
 /* string handlers */
 int _strlen(char *s);
 int _strcmp(char *s1, char *s2);
@@ -156,11 +173,24 @@ void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
 int _free2(char **ptr);
 
 /* env handlers */
+char **get_environ(passinfo_t *info);
+int remove_env(passinfo_t *info);
+int _set_env(passinfo_t *info, char *name, char *value);
+int set_env(passinfo_t *info);
+int _remove_env(passinfo_t *info, char *name);
+
+/* env handlers 2 */
 int print_env(passinfo_t *info);
 char *get_env(passinfo_t *info, char *name);
-int set_env(passinfo_t *info);
-int remove_env(passinfo_t *info);
 int populate_env(passinfo_t *info);
+
+/* io */
+int convert_to_list(passinfo_t *info, char *str, int count);
+char *get_hf(passinfo_t *info);
+int w_history(passinfo_t *info);
+int r_history(passinfo_t *info);
+int e_history(passinfo_t *info);
+
 /* utils */
 int is_sh_mode(passinfo_t *info);
 int is_delim(char c, char *delim);
