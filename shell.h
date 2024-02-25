@@ -131,13 +131,13 @@ typedef struct builtins
 } builtins_t;
 
 /* _putchar */
-void _puts(char *str);
-void _putchar(char c);
+int _puts(char *str);
+int _putchar(char c);
 
 
 /* core navigation */
 int _cd(passinfo_t *info);
-int _exit(passinfo_t *info);
+int _myexit(passinfo_t *info);
 int _help(passinfo_t *info);
 int show_history(passinfo_t *info);
 int show_alias(passinfo_t *info);
@@ -147,14 +147,25 @@ int set_alias(passinfo_t *info, char *name);
 int remove_alias(passinfo_t *info, char *name);
 int print_alias(list_t *node);
 int _alias(passinfo_t *info);
+int change_alias(passinfo_t *info);
+
+/* chain delimeter handlers */
+int is_chained(passinfo_t *info, char *cmd, size_t *path);
+void exec_chained(passinfo_t *info, char *cmd,
+size_t *path, size_t i, size_t len);
+int replace_vars(passinfo_t *info);
+int replace_str(char **str, char *new_str);
 
 /* cmd */
 int is_executable(passinfo_t *info, char *path);
+char *mul_path(char *path, int start, int end);
+char *find_path(passinfo_t *info, char *path, char *cmd);
 
 /* string handlers */
 int _strlen(char *s);
 int _strcmp(char *s1, char *s2);
 char *_strcat(char *dest, char *src);
+char *_strncat(char *dest, char *src, int n);
 char *_strdup(char *str);
 char *_strcpy(char *dest, char *src);
 
@@ -191,6 +202,13 @@ int w_history(passinfo_t *info);
 int r_history(passinfo_t *info);
 int e_history(passinfo_t *info);
 
+/* input.c */
+ssize_t input_buffer(passinfo_t *info, char **buffer, size_t *size);
+void signalHandler(__attribute__((unused)) int sig);
+ssize_t get_input(passinfo_t *info);
+ssize_t read_buffer(passinfo_t *info, char *buffer, size_t *size);
+int _getline(passinfo_t *info, char **ptr, size_t *len);
+
 /* utils */
 int is_sh_mode(passinfo_t *info);
 int is_delim(char c, char *delim);
@@ -221,13 +239,18 @@ int delete_node_at_index(list_t **head, unsigned int index);
 /* error handlers */
 void _eputs(char *str);
 int _eputchar(char c);
-int _putfd(int fd, char c);
-int _putsfd(int fd, char *str);
+int _putfd(char c, int fd);
+int _putsfd(char *str, int fd);
 
 /* info handlers */
 void clear(passinfo_t *info);
 void set_info(passinfo_t *info, char **argv);
 void free_info(passinfo_t *info, int free_env);
 
+/* hsh */
+int hsh(passinfo_t *info, char **argv);
+int find_built_in(passinfo_t *info);
+void find_cmd(passinfo_t *info);
+void fork_cmd(passinfo_t *info);
 
 #endif

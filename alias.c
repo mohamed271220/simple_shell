@@ -44,7 +44,7 @@ if (alias_name)
 c = *alias_name;
 *alias_name = 0;
 ret = delete_node_at_index(&info->alias,
-node_by_index(info->alias, node_starts_with(info->alias, name, -1)));
+node_by_index(info->alias, node_starts_with(info->alias, name, '=')));
 *alias_name = c;
 return (ret);
 }
@@ -70,7 +70,7 @@ for (alias_name = node->str; alias_name < alias; alias_name++)
 _putchar(*alias_name);
 _putchar('/');
 _puts(alias + 1);
-_put('\n');
+_putchar('\n');
 return (1);
 }
 return (0);
@@ -106,8 +106,44 @@ for (i = 1; i < info->argc; i++)
 	if (alias)
 		set_alias(info, info->argv[i]);
 	else
-		print_alias(node_starts_with(info->alias, info->argv[i], "="));
+		print_alias(node_starts_with(info->alias, info->argv[i], '='));
 }
 
 return (1);
+}
+
+/**
+* change_alias - changes an alias
+* @info: passinfo struct
+* Return: 1 on success, 0 on error
+*/
+
+int change_alias(passinfo_t *info)
+{
+	int i = 0;
+
+	list_t *temp = NULL;
+	char *alias = NULL;
+
+	for (i = 0; i < 10; i++)
+	{
+		temp = node_starts_with(info->alias, info->argv[0], '=');
+		if (!temp)
+		{
+			return (0);
+		}
+		alias = _strchr(temp->str, '=');
+		free(info->argv[0]);
+		if (!alias)
+		{
+			return (0);
+		}
+		alias = _strdup(alias + 1);
+		if (!alias)
+		{
+			return (0);
+		}
+		info->argv[0] = alias;
+	}
+	return (1);
 }

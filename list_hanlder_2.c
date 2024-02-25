@@ -48,7 +48,9 @@ char **list_to_array(list_t *head)
 	char **array;
 
 	list_t *current;
-	unsigned int i, len;
+	int i;
+
+	unsigned int len;
 
 	if (head == NULL)
 		return (NULL);
@@ -59,7 +61,7 @@ char **list_to_array(list_t *head)
 	if (array == NULL)
 		return (NULL);
 	current = head;
-	for (i = 0; i < len; i++)
+	for (i = 0; i < (int)len; i++)
 	{
 		array[i] = _strdup(current->str);
 		if (array[i] == NULL)
@@ -75,6 +77,7 @@ char **list_to_array(list_t *head)
 	return (array);
 }
 
+
 /**
 * print_list - prints all the elements of a list_t list
 * @head: pointer to the head of the list
@@ -86,7 +89,7 @@ size_t print_list(list_t *head)
 size_t count = 0;
 while (head != NULL)
 {
-_puts(number_conversion(head > num, 10, 0));
+_puts(number_conversion(head->num, 10, 0));
 _putchar(':');
 _putchar(' ');
 _puts(head->str ? head->str : "(nil)");
@@ -94,9 +97,8 @@ _puts("\n");
 head = head->next;
 count++;
 }
-return (count);
+	return (count);
 }
-
 /**
 * node_starts_with - checks if a node starts with a given string
 * @head: pointer to the node
@@ -105,18 +107,18 @@ return (count);
 * Return: 1 if it starts with the string, 0 if it doesn't
 */
 
-list_t node_starts_with(list_t *head, char *start, char c)
+list_t *node_starts_with(list_t *head, char *start, char c)
 {
-char *ptr = NULL;
+	char *ptr = NULL;
 
-while (head != NULL)
-{
-ptr = starts_with(head->str, start);
-if (ptr != NULL && (c == '\0' || *ptr == c))
-return (head);
-head = head->next;
-}
-return (NULL);
+	while (head != NULL)
+	{
+		ptr = starts_with(head->str, start);
+		if (ptr != NULL && (c == '\0' || *ptr == c))
+			return (head);
+		head = head->next;
+	}
+	return (NULL);
 }
 
 /**
@@ -126,15 +128,15 @@ return (NULL);
 * Return: pointer to the node, or -1 if it failed
 */
 
-size_t *node_by_index(list_t *head, list_t *target)
+size_t node_by_index(list_t *head, list_t *target)
 {
 size_t i = 0;
 while (head)
 {
-if (head == target)
-return (i);
-head = head->next;
-i++;
+	if (head == target)
+		return (i);
+	head = head->next;
+	i++;
 }
-return (-1);
+	return (-1);
 }

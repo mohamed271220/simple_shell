@@ -37,10 +37,10 @@ exit(127);
 }
 return (EXIT_FAILURE);
 }
-passinfo.read_fd = fd;
+passinfo->read_fd = fd;
 }
 populate_env(passinfo);
-read_history(passinfo);
+r_history(passinfo);
 hsh(passinfo, argv);
 return (EXIT_SUCCESS);
 }

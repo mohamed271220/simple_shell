@@ -19,7 +19,7 @@ return (0);
 * Return: the value
 */
 
-int get_env(passinfo_t *info, char *name)
+char *get_env(passinfo_t *info, char *name)
 {
 list_t *env = info->env;
 char *value = NULL;

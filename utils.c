@@ -68,21 +68,31 @@ int _atoi(char *s)
 * @s: string to be converted
 * Return: the integer value of the string or -1
 */
-
 int _erratoi(char *s)
 {
 	int sign = 1;
 
 	unsigned long int num = 0;
 
+	int digit;
+
 	while (*s)
 	{
 		if (*s == '-')
 			sign *= -1;
 		if (*s >= '0' && *s <= '9')
-			num = num * 10 + (*s - '0');
-		else if (num > INT_MAX)
-			return (-1);
+		{
+			digit = *s - '0';
+			if (sign > 0 && (num > INT_MAX / 10 ||
+			(num == INT_MAX / 10 && digit > INT_MAX % 10)))
+				return (-1);
+			if (sign < 0 && (num > (unsigned int)INT_MIN / 10 ||
+			(num == (unsigned int)INT_MIN / 10 &&
+			(unsigned int)digit > (unsigned int)INT_MIN % 10)))
+
+				return (-1);
+			num = num * 10 + digit;
+		}
 		s++;
 	}
 	return (sign * num);

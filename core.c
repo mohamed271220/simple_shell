@@ -1,13 +1,13 @@
 #include "shell.h"
 
 /**
-* _exit - exits the shell
+* _myexit - exits the shell
 * @info: passinfo struct
 * Return: -2  on success (to exit the shell) or 0 on error
 */
 
 
-int _exit(passinfo_t *info)
+int _myexit(passinfo_t *info)
 {
 
 int ret = -2;
@@ -72,7 +72,7 @@ int _cd(passinfo_t *info)
 		pwd = getcwd(NULL, 0);
 		if (pwd)
 		{
-			set_env(info, "PWD", pwd);
+			_set_env(info, "PWD", pwd);
 			free(pwd);
 		}
 	}
@@ -102,7 +102,7 @@ int _help(passinfo_t *info)
 	_puts("setenv\n");
 	if (0)
 	{
-	_put(*help);
+	_puts(*help);
 	}
 	return (0);
 }

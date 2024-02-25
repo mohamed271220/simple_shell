@@ -9,6 +9,7 @@
 char *get_hf(passinfo_t *info)
 {
 char *hf, *home;
+
 home = get_env(info, "HOME=");
 if (!home)
 return (NULL);
@@ -23,44 +24,48 @@ return (hf);
 }
 
 /**
- * w_history - writes the history
- * @info: passinfo struct
- * Return: 1 on success, -1 on error
+* w_history - writes the history
+* @info: passinfo struct
+* Return: 1 on success, -1 on error
 */
 
 int w_history(passinfo_t *info)
 {
-size_t fd;
-char *file_name = get_hf(info);
-list_t *history = NULL;
+	int fd;
+
+	char *file_name = get_hf(info);
+
+	list_t *history = NULL;
 if (!file_name)
 return (-1);
-fd = open(file_name, O_CREAT | O_WRONLY | O_TRUNC, 0600);
-free(file_name);
-if (fd == -1)
-return (-1);
-for (history = info->history; history; history = history->next)
-{
-_putsfd(history->str, fd);
-_putfd("\n", fd);
-}
-_putfd(BUFFER_FLUSH, fd);
-close(fd);
-return (1);
+	fd = open(file_name, O_CREAT | O_WRONLY | O_TRUNC, 0600);
+	free(file_name);
+	if (fd == -1)
+		return (-1);
+	for (history = info->history; history; history = history->next)
+	{
+		_putsfd(history->str, fd);
+		_putfd('\n', fd);
+	}
+	_putfd(BUFFER_FLUSH, fd);
+	close(fd);
+	return (1);
 }
 
 /**
- * r_history - reads the history
- * @info: passinfo struct
- * Return: count on success, 0 on error
+* r_history - reads the history
+* @info: passinfo struct
+* Return: count on success, 0 on error
 */
 
 int r_history(passinfo_t *info)
 {
 int i, last = 0, count = 0;
-size_t fd, read_len, fsize = 0;
-strict stat st;
+int fd;
+size_t read_len, fsize = 0;
+struct stat st;
 char *file_name = get_hf(info);
+
 char *buffer = NULL;
 
 if (!file_name)
@@ -80,7 +85,6 @@ read_len = read(fd, buffer, fsize);
 buffer[fsize] = 0;
 if (read_len <= 0)
 return (free(buffer), close(fd), 0);
-
 for (i = 0; i < (int)fsize; i++)
 if (buffer[i] == '\n')
 {
@@ -94,16 +98,16 @@ free(buffer);
 info->history_count = count;
 while (info->history_count-- >= HISTORY_SIZE)
 delete_node_at_index(&info->history, 0);
-e_history(info)
+e_history(info);
 return (info->history_count);
 }
 
 /**
- * convert_to_list - edits the history
- * @info: passinfo struct
- * @str: string to convert
- * @count: count
- * Return:  0
+* convert_to_list - edits the history
+* @info: passinfo struct
+* @str: string to convert
+* @count: count
+* Return:  0
 */
 
 int convert_to_list(passinfo_t *info, char *str, int count)
@@ -118,9 +122,9 @@ return (0);
 }
 
 /**
- * e_history - edits the history
- * @info: passinfo struct
- * Return:  history count
+* e_history - edits the history
+* @info: passinfo struct
+* Return:  history count
 */
 
 int e_history(passinfo_t *info)

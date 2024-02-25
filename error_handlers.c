@@ -40,12 +40,12 @@ return (1);
 
 /**
 * _putfd - writes a character to a file descriptor
-* @fd: file descriptor
 * @c: character to be written
+* @fd: file descriptor
 * Return: on success 1, on error -1
 */
 
-int _putfd(int fd, char c)
+int _putfd(char c, int fd)
 {
 static int i;
 
@@ -68,7 +68,7 @@ return (1);
 * Return: number of characters written
 */
 
-int _putsfd(int fd, char *str)
+int _putsfd(char *str, int fd)
 {
 	int i = 0;
 

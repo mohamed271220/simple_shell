@@ -27,7 +27,7 @@ _eputs(info->argv[0]);
 * Return: void
 */
 
-void print_decimal(unsigned int n, int fd)
+int print_decimal(int n, int fd)
 {
 int (*__putchar)(char) = _putchar;
 unsigned int num;

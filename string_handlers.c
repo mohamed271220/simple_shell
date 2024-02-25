@@ -8,11 +8,11 @@
 
 int _strlen(char *s)
 {
-    int i;
+	int i;
 
-    for (i = 0; s[i] != '\0'; i++)
-        ;
-    return (i);
+	for (i = 0; s[i] != '\0'; i++)
+		;
+	return (i);
 }
 
 /**
@@ -24,19 +24,20 @@ int _strlen(char *s)
 
 char *_strdup(char *str)
 {
-    char *dup;
-    int i, len;
+	char *dup;
 
-    if (str == NULL)
-        return (NULL);
-    len = _strlen(str);
-    dup = malloc(sizeof(char) * (len + 1));
-    if (dup == NULL)
-        return (NULL);
-    for (i = 0; i < len; i++)
-        dup[i] = str[i];
-    dup[i] = '\0';
-    return (dup);
+	int i, len;
+
+	if (str == NULL)
+		return (NULL);
+	len = _strlen(str);
+	dup = malloc(sizeof(char) * (len + 1));
+	if (dup == NULL)
+		return (NULL);
+	for (i = 0; i < len; i++)
+		dup[i] = str[i];
+	dup[i] = '\0';
+	return (dup);
 }
 
 /**
@@ -48,37 +49,16 @@ char *_strdup(char *str)
 
 int _strcmp(char *s1, char *s2)
 {
-    int i;
+	int i;
 
-    for (i = 0; s1[i] == s2[i]; i++)
-    {
-        if (s1[i] == '\0')
-            return (0);
-    }
-    return (s1[i] - s2[i]);
+	for (i = 0; s1[i] == s2[i]; i++)
+	{
+		if (s1[i] == '\0')
+			return (0);
+	}
+	return (s1[i] - s2[i]);
 }
 
-/**
-* _strcat - concatenates two strings
-* @dest: destination string
-* @src: source string
-* Return: pointer to the resulting string
-*/
-
-char *_strcat(char *dest, char *src)
-{
-    int i, j;
-
-    for (i = 0; dest[i] != '\0'; i++)
-        ;
-    for (j = 0; src[j] != '\0'; j++)
-    {
-        dest[i] = src[j];
-        i++;
-    }
-    dest[i] = '\0';
-    return (dest);
-}
 
 /**
 * _strcpy - copies the string pointed to by src, including the
@@ -90,10 +70,10 @@ char *_strcat(char *dest, char *src)
 
 char *_strcpy(char *dest, char *src)
 {
-    int i;
+	int i;
 
-    for (i = 0; src[i] != '\0'; i++)
-        dest[i] = src[i];
-    dest[i] = '\0';
-    return (dest);
+	for (i = 0; src[i] != '\0'; i++)
+		dest[i] = src[i];
+	dest[i] = '\0';
+	return (dest);
 }

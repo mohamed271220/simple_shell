@@ -17,7 +17,10 @@ list_t *add_node(list_t **head, char *str, int num)
     if (new_node == NULL)
         return (NULL);
     new_node->str = _strdup(str);
-    new_node->len = _strlen(str);
+    if (new_node->str == NULL) {
+        free(new_node);
+        return (NULL);
+    }
     new_node->num = num;
     new_node->next = *head;
     *head = new_node;
@@ -99,6 +102,7 @@ size_t list_len(list_t *head)
 * Return: address of the new element, or NULL if it failed
 */
 
+
 list_t *add_node_end(list_t **head, char *str, int num)
 {
     list_t *new_node;
@@ -108,7 +112,10 @@ list_t *add_node_end(list_t **head, char *str, int num)
     if (new_node == NULL)
         return (NULL);
     new_node->str = _strdup(str);
-    new_node->len = _strlen(str);
+    if (new_node->str == NULL) {
+        free(new_node);
+        return (NULL);
+    }
     new_node->num = num;
     new_node->next = NULL;
     if (*head == NULL)
