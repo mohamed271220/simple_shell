@@ -41,12 +41,11 @@ return (NULL);
 
 int populate_env(passinfo_t *info)
 {
-list_t *env = NULL;
-size_t len;
+list_t *node = NULL;
+size_t i;
 
-for (len = 0; environ[len]; len++)
-add_node_end(&env, environ[len], 0);
-
-info->env = env;
+for (i = 0; environ[i]; i++)
+add_node_end(&node, environ[i], 0);
+info->env = node;
 return (0);
 }
