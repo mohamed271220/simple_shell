@@ -31,25 +31,25 @@ return (hf);
 
 int w_history(passinfo_t *info)
 {
-	int fd;
+int fd;
 
-	char *file_name = get_hf(info);
+char *file_name = get_hf(info);
 
-	list_t *history = NULL;
+list_t *history = NULL;
 if (!file_name)
 return (-1);
-	fd = open(file_name, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-	free(file_name);
-	if (fd == -1)
-		return (-1);
-	for (history = info->history; history; history = history->next)
-	{
-		_putsfd(history->str, fd);
-		_putfd('\n', fd);
-	}
-	_putfd(BUFFER_FLUSH, fd);
-	close(fd);
-	return (1);
+fd = open(file_name, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+free(file_name);
+if (fd == -1)
+return (-1);
+for (history = info->history; history; history = history->next)
+{
+_putsfd(history->str, fd);
+_putfd('\n', fd);
+}
+_putfd(BUFFER_FLUSH, fd);
+close(fd);
+return (1);
 }
 
 /**

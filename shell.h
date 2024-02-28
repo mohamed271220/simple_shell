@@ -9,8 +9,10 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include <fcntl.h>
 #include <errno.h>
 #include <limits.h>
+#include <csignal>
 
 
 #define READ_BUFFER 1024

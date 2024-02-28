@@ -9,13 +9,13 @@
 
 int is_executable(passinfo_t *info, char *path)
 {
-	struct stat s;
-	(void)info;
-	if (!path || stat(path, &s))
-		return (0);
-	if (s.st_mode & S_IFREG)
-		return (1);
-	return (0);
+struct stat s;
+(void)info;
+if (!path || stat(path, &s))
+return (0);
+if (s.st_mode & S_IFREG)
+return (1);
+return (0);
 }
 
 /**
@@ -48,40 +48,40 @@ return (new_path);
 
 char *find_path(passinfo_t *info, char *path, char *cmd)
 {
-	int i = 0, j = 0;
+int i = 0, j = 0;
 
-	char *new_path;
+char *new_path;
 
-	if (!path)
-		return (NULL);
+if (!path)
+return (NULL);
 
-	if ((_strlen(cmd) > 2) && starts_with(cmd, "./"))
-	{
-		if (is_executable(info, cmd))
-			return (cmd);
-	}
+if ((_strlen(cmd) > 2) && starts_with(cmd, "./"))
+{
+if (is_executable(info, cmd))
+return (cmd);
+}
 
-	while (1)
-	{
-		if (path[i] == ':' || !path[i])
-		{
-			new_path = mul_path(path, j, i);
-			if (!*new_path)
-				_strcat(new_path, cmd);
-			else
-			{
-				_strcat(new_path, "/");
-				_strcat(new_path, cmd);
-			}
+while (1)
+{
+if (path[i] == ':' || !path[i])
+{
+new_path = mul_path(path, j, i);
+if (!*new_path)
+_strcat(new_path, cmd);
+else
+{
+_strcat(new_path, "/");
+_strcat(new_path, cmd);
+}
 
-			if (is_executable(info, new_path))
-				return (new_path);
-			if (!path[i])
-				break;
-			j = i;
-		}
-		i++;
-	}
+if (is_executable(info, new_path))
+return (new_path);
+if (!path[i])
+break;
+j = i;
+}
+i++;
+}
 
-	return (NULL);
+return (NULL);
 }

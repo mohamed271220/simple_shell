@@ -86,24 +86,24 @@ return (0);
 
 int _help(passinfo_t *info)
 {
-	char **help;
+char **help;
 
-	help = info->argv;
-	_puts("This is a simple shell\n");
-	_puts("Type a command and press enter.\n");
-	_puts("The following commands are built in:\n");
-	_puts("cd\n");
-	_puts("exit\n");
-	_puts("help\n");
-	_puts("history\n");
-	_puts("alias\n");
-	_puts("env\n");
-	_puts("setenv\n");
-	if (0)
-	{
-	_puts(*help);
-	}
-	return (0);
+help = info->argv;
+_puts("This is a simple shell\n");
+_puts("Type a command and press enter.\n");
+_puts("The following commands are built in:\n");
+_puts("cd\n");
+_puts("exit\n");
+_puts("help\n");
+_puts("history\n");
+_puts("alias\n");
+_puts("env\n");
+_puts("setenv\n");
+if (0)
+{
+_puts(*help);
+}
+return (0);
 }
 
 /**

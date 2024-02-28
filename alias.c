@@ -14,11 +14,11 @@ char *alias_name;
 alias_name = _strchr(name, '=');
 if (!alias_name)
 {
-	return (-1);
+return (-1);
 }
 if (!*++alias_name)
 {
-	return (remove_alias(info, name));
+return (remove_alias(info, name));
 }
 remove_alias(info, name);
 return (add_node_end(&info->alias, name, 0) == NULL);
@@ -86,23 +86,22 @@ char *alias = NULL;
 list_t *temp = NULL;
 if (info->argc == 1)
 {
-	temp = info->alias;
-		while (temp)
-		{
-			print_alias(temp);
-			temp = temp->next;
-		}
+temp = info->alias;
+while (temp)
+{
+print_alias(temp);
+temp = temp->next;
+}
 return (0);
 }
 for (i = 1; info->argv[i]; i++)
 {
-	alias = _strchr(info->argv[i], '=');
-	if (alias)
-		set_alias(info, info->argv[i]);
-	else
-		print_alias(node_starts_with(info->alias, info->argv[i], '='));
+alias = _strchr(info->argv[i], '=');
+if (alias)
+set_alias(info, info->argv[i]);
+else
+print_alias(node_starts_with(info->alias, info->argv[i], '='));
 }
-
 return (0);
 }
 
@@ -116,28 +115,28 @@ int change_alias(passinfo_t *info)
 {
 	int i = 0;
 
-	list_t *temp;
-	char *alias;
+list_t *temp;
+char *alias;
 
-	for (i = 0; i < 10; i++)
-	{
-		temp = node_starts_with(info->alias, info->argv[0], '=');
-		if (!temp)
-		{
-			return (0);
-		}
-		alias = _strchr(temp->str, '=');
-		free(info->argv[0]);
-		if (!alias)
-		{
-			return (0);
-		}
-		alias = _strdup(alias + 1);
-		if (!alias)
-		{
-			return (0);
-		}
-		info->argv[0] = alias;
-	}
-	return (1);
+for (i = 0; i < 10; i++)
+{
+temp = node_starts_with(info->alias, info->argv[0], '=');
+if (!temp)
+{
+return (0);
+}
+alias = _strchr(temp->str, '=');
+free(info->argv[0]);
+if (!alias)
+{
+return (0);
+}
+alias = _strdup(alias + 1);
+if (!alias)
+{
+return (0);
+}
+info->argv[0] = alias;
+}
+return (1);
 }

@@ -7,7 +7,7 @@
 */
 int is_sh_mode(passinfo_t *info)
 {
-	return (isatty(STDIN_FILENO) && info->read_fd <= 2);
+return (isatty(STDIN_FILENO) && info->read_fd <= 2);
 }
 
 /**
@@ -19,12 +19,12 @@ int is_sh_mode(passinfo_t *info)
 
 int is_delim(char c, char *delim)
 {
-	while (*delim)
-	{
-		if (c == *delim++)
-			return (1);
-	}
-	return (0);
+while (*delim)
+{
+if (c == *delim++)
+return (1);
+}
+return (0);
 }
 
 /**
@@ -35,9 +35,9 @@ int is_delim(char c, char *delim)
 
 int _isAlpha(char c)
 {
-	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
-		return (1);
-	return (0);
+if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
+return (1);
+return (0);
 }
 
 /**
@@ -48,21 +48,21 @@ int _isAlpha(char c)
 
 int _atoi(char *s)
 {
-	int sign = 1;
+int sign = 1;
 
-	unsigned int num = 0;
+unsigned int num = 0;
 
-	while (*s)
-	{
-		if (*s == '-')
-			sign *= -1;
-		if (*s >= '0' && *s <= '9')
-			num = num * 10 + (*s - '0');
-		else if (num > 0)
-			break;
-		s++;
-	}
-	return (sign * num);
+while (*s)
+{
+if (*s == '-')
+sign *= -1;
+if (*s >= '0' && *s <= '9')
+num = num * 10 + (*s - '0');
+else if (num > 0)
+break;
+s++;
+}
+return (sign * num);
 }
 
 /**
@@ -72,30 +72,30 @@ int _atoi(char *s)
 */
 int _erratoi(char *s)
 {
-	int sign = 1;
+int sign = 1;
 
-	unsigned long int num = 0;
+unsigned long int num = 0;
 
-	int digit;
+int digit;
 
-	while (*s)
-	{
-		if (*s == '-')
-			sign *= -1;
-		if (*s >= '0' && *s <= '9')
-		{
-			digit = *s - '0';
-			if (sign > 0 && (num > INT_MAX / 10 ||
-			(num == INT_MAX / 10 && digit > INT_MAX % 10)))
-				return (-1);
-			if (sign < 0 && (num > (unsigned int)INT_MIN / 10 ||
-			(num == (unsigned int)INT_MIN / 10 &&
-			(unsigned int)digit > (unsigned int)INT_MIN % 10)))
+while (*s)
+{
+if (*s == '-')
+sign *= -1;
+if (*s >= '0' && *s <= '9')
+{
+digit = *s - '0';
+if (sign > 0 && (num > INT_MAX / 10 ||
+(num == INT_MAX / 10 && digit > INT_MAX % 10)))
+return (-1);
+if (sign < 0 && (num > (unsigned int)INT_MIN / 10 ||
+(num == (unsigned int)INT_MIN / 10 &&
+(unsigned int)digit > (unsigned int)INT_MIN % 10)))
 
-				return (-1);
-			num = num * 10 + digit;
-		}
-		s++;
-	}
-	return (sign * num);
+return (-1);
+num = num * 10 + digit;
+}
+s++;
+}
+return (sign * num);
 }

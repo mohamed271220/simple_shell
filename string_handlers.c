@@ -8,11 +8,11 @@
 
 int _strlen(char *s)
 {
-	int i;
+int i;
 
-	for (i = 0; s[i] != '\0'; i++)
-		;
-	return (i);
+for (i = 0; s[i] != '\0'; i++)
+;
+return (i);
 }
 
 /**
@@ -48,17 +48,17 @@ return (dup);
 
 int _strcmp(char *s1, char *s2)
 {
-	while (*s1 && *s2 && *s1 == *s2)
-	{
-		if (*s1 != *s2)
-			return (*s1 - *s2);
-		s1++;
-		s2++;
-	}
-	if (*s1 == *s2)
-		return (0);
-	else
-		return (*s1 < *s2 ? -1 : 1);
+while (*s1 && *s2 && *s1 == *s2)
+{
+if (*s1 != *s2)
+return (*s1 - *s2);
+s1++;
+s2++;
+}
+if (*s1 == *s2)
+return (0);
+else
+return (*s1 < *s2 ? -1 : 1);
 
 }
 
@@ -73,10 +73,10 @@ int _strcmp(char *s1, char *s2)
 
 char *_strcpy(char *dest, char *src)
 {
-	int i;
+int i;
 
-	for (i = 0; src[i] != '\0'; i++)
-		dest[i] = src[i];
-	dest[i] = '\0';
-	return (dest);
+for (i = 0; src[i] != '\0'; i++)
+dest[i] = src[i];
+dest[i] = '\0';
+return (dest);
 }

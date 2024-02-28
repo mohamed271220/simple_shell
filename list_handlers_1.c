@@ -11,20 +11,20 @@
 
 list_t *add_node(list_t **head, char *str, int num)
 {
-    list_t *new_node;
+list_t *new_node;
 
-    new_node = malloc(sizeof(list_t));
-    if (new_node == NULL)
-        return (NULL);
-    new_node->str = _strdup(str);
-    if (new_node->str == NULL) {
-        free(new_node);
-        return (NULL);
-    }
-    new_node->num = num;
-    new_node->next = *head;
-    *head = new_node;
-    return (new_node);
+new_node = malloc(sizeof(list_t));
+if (new_node == NULL)
+return (NULL);
+new_node->str = _strdup(str);
+if (new_node->str == NULL) {
+free(new_node);
+return (NULL);
+}
+new_node->num = num;
+new_node->next = *head;
+*head = new_node;
+return (new_node);
 }
 
 /**
@@ -35,18 +35,18 @@ list_t *add_node(list_t **head, char *str, int num)
 
 void free_list(list_t **head)
 {
-    list_t *current;
-    list_t *next;
+list_t *current;
+list_t *next;
 
-    current = *head;
-    while (current != NULL)
-    {
-        next = current->next;
-        free(current->str);
-        free(current);
-        current = next;
-    }
-    *head = NULL;
+current = *head;
+while (current != NULL)
+{
+next = current->next;
+free(current->str);
+free(current);
+current = next;
+}
+*head = NULL;
 }
 
 /**
@@ -57,22 +57,22 @@ void free_list(list_t **head)
 
 size_t print_list_s(list_t *head)
 {
-    size_t count;
+size_t count;
 
-    count = 0;
-    while (head != NULL)
-    {
-        if (head->str == NULL)
-            _puts("(nil)\n");
-        else
-        {
-            _puts(head->str);
-            _putchar('\n');
-        }
-        head = head->next;
-        count++;
-    }
-    return (count);
+count = 0;
+while (head != NULL)
+{
+if (head->str == NULL)
+_puts("(nil)\n");
+else
+{
+_puts(head->str);
+_putchar('\n');
+}
+head = head->next;
+count++;
+}
+return (count);
 }
 
 /**
@@ -83,15 +83,15 @@ size_t print_list_s(list_t *head)
 
 size_t list_len(list_t *head)
 {
-    size_t count;
+size_t count;
 
-    count = 0;
-    while (head != NULL)
-    {
-        head = head->next;
-        count++;
-    }
-    return (count);
+count = 0;
+while (head != NULL)
+{
+head = head->next;
+count++;
+}
+return (count);
 }
 
 /**
@@ -105,27 +105,27 @@ size_t list_len(list_t *head)
 
 list_t *add_node_end(list_t **head, char *str, int num)
 {
-    list_t *new_node;
-    list_t *last;
+list_t *new_node;
+list_t *last;
 
-    new_node = malloc(sizeof(list_t));
-    if (new_node == NULL)
-        return (NULL);
-    new_node->str = _strdup(str);
-    if (new_node->str == NULL) {
-        free(new_node);
-        return (NULL);
-    }
-    new_node->num = num;
-    new_node->next = NULL;
-    if (*head == NULL)
-    {
-        *head = new_node;
-        return (new_node);
-    }
-    last = *head;
-    while (last->next != NULL)
-        last = last->next;
-    last->next = new_node;
-    return (new_node);
+new_node = malloc(sizeof(list_t));
+if (new_node == NULL)
+return (NULL);
+new_node->str = _strdup(str);
+if (new_node->str == NULL) {
+free(new_node);
+return (NULL);
+}
+new_node->num = num;
+new_node->next = NULL;
+if (*head == NULL)
+{
+*head = new_node;
+return (new_node);
+}
+last = *head;
+while (last->next != NULL)
+last = last->next;
+last->next = new_node;
+return (new_node);
 }

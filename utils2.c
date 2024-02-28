@@ -10,13 +10,13 @@
 
 void print_error(passinfo_t *info, char *msg)
 {
-	_eputs(info->file_name);
-	_eputs(": ");
-	print_decimal(info->line, STDIN_FILENO);
-	_eputs(": ");
+_eputs(info->file_name);
+_eputs(": ");
+print_decimal(info->line, STDIN_FILENO);
+_eputs(": ");
 _eputs(info->argv[0]);
-	_eputs(": ");
-	_eputs(msg);
+_eputs(": ");
+_eputs(msg);
 }
 
 

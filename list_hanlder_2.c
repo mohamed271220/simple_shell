@@ -9,32 +9,32 @@
 
 int delete_node_at_index(list_t **head, unsigned int index)
 {
-	list_t *current;
-	list_t *next;
-	unsigned int i;
+list_t *current;
+list_t *next;
+unsigned int i;
 
-	if (*head == NULL)
-		return (-1);
-	if (index == 0)
-	{
-		next = (*head)->next;
-		free((*head)->str);
-		free(*head);
-		*head = next;
-		return (1);
-	}
-	current = *head;
-	for (i = 0; i < index - 1; i++)
-	{
-		if (current->next == NULL)
-			return (-1);
-		current = current->next;
-	}
-	next = current->next;
-	current->next = next->next;
-	free(next->str);
-	free(next);
-	return (1);
+if (*head == NULL)
+return (-1);
+if (index == 0)
+{
+next = (*head)->next;
+free((*head)->str);
+free(*head);
+*head = next;
+return (1);
+}
+current = *head;
+for (i = 0; i < index - 1; i++)
+{
+if (current->next == NULL)
+return (-1);
+current = current->next;
+}
+next = current->next;
+current->next = next->next;
+free(next->str);
+free(next);
+return (1);
 }
 
 /**
@@ -45,36 +45,36 @@ int delete_node_at_index(list_t **head, unsigned int index)
 
 char **list_to_array(list_t *head)
 {
-	char **array;
+char **array;
 
-	list_t *current;
-	int i;
+list_t *current;
+int i;
 
-	unsigned int len;
+unsigned int len;
 
-	if (head == NULL)
-		return (NULL);
-	current = head;
-	for (len = 0; current != NULL; len++)
-		current = current->next;
-	array = malloc(sizeof(char *) * (len + 1));
-	if (array == NULL)
-		return (NULL);
-	current = head;
-	for (i = 0; i < (int)len; i++)
-	{
-		array[i] = _strdup(current->str);
-		if (array[i] == NULL)
-		{
-			for (i--; i >= 0; i--)
-				free(array[i]);
-			free(array);
-			return (NULL);
-		}
-		current = current->next;
-	}
-	array[i] = NULL;
-	return (array);
+if (head == NULL)
+return (NULL);
+current = head;
+for (len = 0; current != NULL; len++)
+current = current->next;
+array = malloc(sizeof(char *) * (len + 1));
+if (array == NULL)
+return (NULL);
+current = head;
+for (i = 0; i < (int)len; i++)
+{
+array[i] = _strdup(current->str);
+if (array[i] == NULL)
+{
+for (i--; i >= 0; i--)
+free(array[i]);
+free(array);
+return (NULL);
+}
+current = current->next;
+}
+array[i] = NULL;
+return (array);
 }
 
 
@@ -97,7 +97,7 @@ _puts("\n");
 head = head->next;
 count++;
 }
-	return (count);
+return (count);
 }
 /**
 * node_starts_with - checks if a node starts with a given string
@@ -109,16 +109,16 @@ count++;
 
 list_t *node_starts_with(list_t *head, char *start, char c)
 {
-	char *ptr = NULL;
+char *ptr = NULL;
 
-	while (head != NULL)
-	{
-		ptr = starts_with(head->str, start);
-		if (ptr && (c == '\0' || *ptr == c))
-			return (head);
-		head = head->next;
-	}
-	return (NULL);
+while (head != NULL)
+{
+ptr = starts_with(head->str, start);
+if (ptr && (c == '\0' || *ptr == c))
+return (head);
+head = head->next;
+}
+return (NULL);
 }
 
 /**
@@ -133,10 +133,10 @@ size_t node_by_index(list_t *head, list_t *target)
 size_t i = 0;
 while (head)
 {
-	if (head == target)
-		return (i);
-	head = head->next;
-	i++;
+if (head == target)
+return (i);
+head = head->next;
+i++;
 }
-	return (-1);
+return (-1);
 }
