@@ -23,10 +23,12 @@ info->path = NULL;
 void set_info(passinfo_t *info, char **argv)
 {
 int i = 0;
+
 info->file_name = argv[0];
 if (info->arg)
 {
 info->argv = _strtow(info->arg, '\t');
+info->argc = i;
 if (!info->argv)
 {
 info->argv = malloc(sizeof(char *) * 2);

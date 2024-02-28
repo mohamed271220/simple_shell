@@ -91,35 +91,36 @@ path_size = len;
 int replace_vars(passinfo_t *info)
 {
 int i = 0;
+list_t *tmp;
 
-list_t *node;
 for (i = 0; info->argv[i]; i++)
 {
-if (info->argv[i][0] != '$' || !info->argv[i][1])
+if (info->argv[i][0] == '$' || !info->argv[i][1])
 continue;
+
 if (!_strcmp(info->argv[i], "$?"))
 {
 replace_str(&info->argv[i],
 _strdup(number_conversion(info->status, 10, 0)));
 continue;
 }
-else if (!_strcmp(info->argv[i], "$$"))
+if (!_strcmp(info->argv[i], "$$"))
 {
 replace_str(&info->argv[i],
 _strdup(number_conversion(getpid(), 10, 0)));
 continue;
 }
-node = node_starts_with(info->env, &info->argv[i][1], '=');
-if (node)
+tmp = node_starts_with(info->env, &info->argv[i][1], '=');
+if (tmp)
 {
-replace_str(&info->argv[i], _strdup(_strchr(node->str, '=') + 1));
+replace_str(&info->argv[i],
+_strdup(_strchr(tmp->str, '=') + 1));
 continue;
 }
 replace_str(&info->argv[i], _strdup(""));
 }
-return (1);
+return (0);
 }
-
 
 /**
 * replace_str - replace string

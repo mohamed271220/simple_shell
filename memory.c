@@ -11,6 +11,7 @@
 char *_memset(char *s, char b, unsigned int n)
 {
 char *a = s;
+
 while (n--)
 *s++ = b;
 return (a);
@@ -25,6 +26,7 @@ return (a);
 void _free(char **ptr)
 {
 char **temp = ptr;
+
 if (ptr == NULL)
 return;
 while (*ptr)
@@ -43,7 +45,9 @@ free(temp);
 void *_memcpy(void *dest, const void *src, unsigned int n)
 {
 char *d = dest;
+
 const char *s = src;
+
 while (n--)
 *d++ = *s++;
 return (dest);
@@ -59,32 +63,23 @@ return (dest);
 
 void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size)
 {
-void *new_ptr;
+char *p;
+if (!ptr)
+return (malloc(new_size));
+if (!new_size)
+return (free(ptr), NULL);
 if (new_size == old_size)
 return (ptr);
-if (ptr == NULL)
-{
-new_ptr = malloc(new_size);
-if (new_ptr == NULL)
-return (NULL);
-return (new_ptr);
-}
 
-if (new_size == 0 && ptr != NULL)
-{
-free(ptr);
+p = malloc(new_size);
+if (!p)
 return (NULL);
-}
 
-new_ptr = malloc(new_size);
-if (new_ptr == NULL)
-return (NULL);
-if (new_size > old_size)
-_memcpy(new_ptr, ptr, old_size);
-else
-_memcpy(new_ptr, ptr, new_size);
+old_size = old_size < new_size ? old_size : new_size;
+while (old_size--)
+p[old_size] = ((char *)ptr)[old_size];
 free(ptr);
-return (new_ptr);
+return (p);
 }
 
 /**

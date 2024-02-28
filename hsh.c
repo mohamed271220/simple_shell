@@ -24,7 +24,6 @@ if (read != -1)
 {
 set_info(info, argv);
 built_in = find_built_in(info);
-printf("built_in: %d\n", built_in);
 if (built_in == -1)
 find_cmd(info);
 }
@@ -68,10 +67,8 @@ int find_built_in(passinfo_t *info)
 	};
 
 if (info == NULL || info->argv == NULL || info->argv[0] == NULL)
-{
-printf(info->argv, info->argv[0]);
 return (ret);
-}
+
 
 	for (i = 0; builtins[i].name; i++)
 	{
