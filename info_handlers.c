@@ -27,7 +27,7 @@ int i = 0;
 info->file_name = argv[0];
 if (info->arg)
 {
-info->argv = _strtow(info->arg, '\t');
+info->argv = _strtow(info->arg, " \t");
 info->argc = i;
 if (!info->argv)
 {
@@ -55,21 +55,24 @@ replace_vars(info);
 
 void free_info(passinfo_t *info, int free_env)
 {
-(void)free_env;
-if (info->arg)
+_free(info->argv);
+info->argv = NULL;
+info->argc = 0;
+if (free_env)
+{
+if (!info->env)
+free_list(&(info->env));
+if (!info->cmd)
 free(info->arg);
-if (info->argv)
-free(info->argv);
-if (info->path)
-free(info->path);
-if (info->env_changed)
-free_list(&info->env);
-if (info->alias)
-free_list(&info->alias);
-if (info->cmd)
-free(info->cmd);
-if (info->history)
-free_list(&info->history);
-
-clear(info);
+if (!info->history)
+free_list(&(info->history));
+if (!info->alias)
+free_list(&(info->alias));
+_free(info->environ);
+info->environ = NULL;
+_free2((void **)info->cmd);
+if (info->read_fd > 2)
+close(info->read_fd);
+_putchar(BUFFER_FLUSH);
+}
 }

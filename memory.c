@@ -10,11 +10,10 @@
 
 char *_memset(char *s, char b, unsigned int n)
 {
-char *a = s;
-
-while (n--)
-*s++ = b;
-return (a);
+unsigned int i;
+for (i = 0; i < n; i++)
+s[i] = b;
+return (s);
 }
 
 /**
@@ -88,7 +87,7 @@ return (p);
 * Return: 1 if success, 0 if failed
 */
 
-int _free2(char **ptr)
+int _free2(void **ptr)
 {
 if (ptr == NULL)
 return (0);

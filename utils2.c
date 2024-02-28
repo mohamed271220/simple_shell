@@ -109,7 +109,7 @@ void remove_comments(char *str)
 int i;
 for (i = 0; str[i] != '\0'; i++)
 {
-if (str[i] == '#')
+if (str[i] == '#' && (i == 0 || str[i - 1] != '\\'))
 {
 str[i] = '\0';
 return;

@@ -114,7 +114,7 @@ list_t *node_starts_with(list_t *head, char *start, char c)
 	while (head != NULL)
 	{
 		ptr = starts_with(head->str, start);
-		if (ptr != NULL && (c == '\0' || *ptr == c))
+		if (ptr && (c == '\0' || *ptr == c))
 			return (head);
 		head = head->next;
 	}

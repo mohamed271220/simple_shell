@@ -24,20 +24,19 @@ int _strlen(char *s)
 
 char *_strdup(char *str)
 {
-	char *dup;
+int len = 0;
+char *dup;
+if (str == NULL)
+return (NULL);
+while (str[len])
+len++;
+dup = malloc(sizeof(char) * (len + 1));
+if (!dup)
+return (NULL);
+for (len++; len--;)
+dup[len] = *--str;
+return (dup);
 
-	int i, len;
-
-	if (str == NULL)
-		return (NULL);
-	len = _strlen(str);
-	dup = malloc(sizeof(char) * (len + 1));
-	if (dup == NULL)
-		return (NULL);
-	for (i = 0; i < len; i++)
-		dup[i] = str[i];
-	dup[i] = '\0';
-	return (dup);
 }
 
 /**
@@ -49,14 +48,18 @@ char *_strdup(char *str)
 
 int _strcmp(char *s1, char *s2)
 {
-	int i;
-
-	for (i = 0; s1[i] == s2[i]; i++)
+	while (*s1 && *s2 && *s1 == *s2)
 	{
-		if (s1[i] == '\0')
-			return (0);
+		if (*s1 != *s2)
+			return (*s1 - *s2);
+		s1++;
+		s2++;
 	}
-	return (s1[i] - s2[i]);
+	if (*s1 == *s2)
+		return (0);
+	else
+		return (*s1 < *s2 ? -1 : 1);
+
 }
 
 

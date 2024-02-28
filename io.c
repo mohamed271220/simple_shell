@@ -13,7 +13,7 @@ char *hf, *home;
 home = get_env(info, "HOME=");
 if (!home)
 return (NULL);
-hf = malloc(_strlen(home) + _strlen(HISTORY_FILE) + 1);
+hf = malloc(_strlen(home) + _strlen(HISTORY_FILE) + 2);
 if (!hf)
 return (NULL);
 hf[0] = 0;
@@ -38,7 +38,7 @@ int w_history(passinfo_t *info)
 	list_t *history = NULL;
 if (!file_name)
 return (-1);
-	fd = open(file_name, O_CREAT | O_WRONLY | O_TRUNC, 0600);
+	fd = open(file_name, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	free(file_name);
 	if (fd == -1)
 		return (-1);
@@ -103,7 +103,7 @@ return (info->history_count);
 }
 
 /**
-* convert_to_list - edits the history
+* convert_to_list - builds the history
 * @info: passinfo struct
 * @str: string to convert
 * @count: count
@@ -113,9 +113,9 @@ return (info->history_count);
 int convert_to_list(passinfo_t *info, char *str, int count)
 {
 list_t *history = NULL;
-if (!str)
-return (0);
-add_node_end(&info->history, str, count);
+if (info->history)
+history = info->history;
+add_node_end(&history, str, count);
 if (!info->history)
 info->history = history;
 return (0);

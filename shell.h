@@ -30,7 +30,7 @@
 #define USE_GETLINE 0
 #define USE_STRTOK 0
 
-#define HISTORY_FILE ".shell_history"
+#define HISTORY_FILE ".simple_shell_history"
 #define HISTORY_SIZE 4096
 
 
@@ -172,14 +172,14 @@ char *starts_with(char *s, char *start);
 char *_strchr(char *s, char c);
 char *_strncopy(char *dest, char *src, int n);
 char *_strncpy(char *dest, char *src, int n);
-char **_strtow(char *str, char delim);
+char **_strtow(char *str, char *delim);
 
 /* memory */
 char *_memset(char *s, char b, unsigned int n);
 void *_memcpy(void *dest, const void *src, unsigned int n);
 void _free(char **ptr);
 void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
-int _free2(char **ptr);
+int _free2(void **ptr);
 
 /* env handlers */
 char **get_environ(passinfo_t *info);

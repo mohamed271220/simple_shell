@@ -22,7 +22,7 @@ ssize_t input_buffer(passinfo_t *info, char **buffer, size_t *size)
 		#else
 		bytes = _getline(info, buffer, &i);
 		#endif
-		if (bytes > 0 && *buffer)
+		if (bytes > 0)
 		{
 			if ((*buffer)[bytes - 1] == '\n')
 			{
@@ -32,7 +32,7 @@ ssize_t input_buffer(passinfo_t *info, char **buffer, size_t *size)
 			info->line_flag = 1;
 			remove_comments(*buffer);
 			convert_to_list(info, *buffer, info->history_count++);
-			if (_strchr(*buffer, '\n'))
+			/*if (_strchr(*buffer, '\n'))*/
 			{
 				*size = bytes;
 				info->cmd = buffer;
@@ -66,7 +66,6 @@ void signalHandler(__attribute__((unused)) int sig)
 ssize_t get_input(passinfo_t *info)
 {
 	static char *buffer;
-
 	static size_t i, j, len;
 	ssize_t bytes = 0;
 	char **buf_ptr = &(info->arg), *ptr;
@@ -164,7 +163,7 @@ int _getline(passinfo_t *info, char **ptr, size_t *len)
 	i = j;
 	tmp = new_ptr;
 	if (len)
-		*len = 0;
+		*len = bytes;
 	*ptr = tmp;
 	return (bytes);
 }

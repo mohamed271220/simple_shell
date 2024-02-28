@@ -31,9 +31,9 @@ char *mul_path(char *path, int start, int end)
 static char new_path[1024];
 int i = 0;
 int k = 0;
-for (k = 0, i = start; k < end; i++)
+for (k = 0, i = start; i < end; i++)
 if (path[i] != ':')
-new_path[k] = path[i];
+new_path[k++] = path[i];
 new_path[k] = 0;
 return (new_path);
 }

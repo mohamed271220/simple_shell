@@ -22,7 +22,7 @@ return (0);
 char *get_env(passinfo_t *info, char *name)
 {
 list_t *env = info->env;
-char *value = NULL;
+char *value;
 while (env)
 {
 value = starts_with(env->str, name);

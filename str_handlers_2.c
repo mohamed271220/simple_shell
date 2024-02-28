@@ -11,13 +11,9 @@
 char *starts_with(char *s, char *start)
 {
 while (*start)
-{
-if (*start != *s)
-	return (0);
-start++;
-s++;
-}
-	return ((char *)start);
+if (*start++ != *s++)
+return (NULL);
+return ((char *)s);
 }
 
 
@@ -30,13 +26,11 @@ s++;
 
 char *_strchr(char *s, char c)
 {
-	while (*s)
-	{
-		if (*s == c)
-		return (s);
-		s++;
-	}
-	return (0);
+do {
+if (*s == c)
+return (s);
+} while (*s++ != '\0');
+return (NULL);
 }
 
 /**
@@ -67,46 +61,43 @@ char *_strncpy(char *dest, char *src, int n)
 * Return: pointer to an array of strings
 */
 
-char **_strtow(char *str, char delim)
+char **_strtow(char *str, char *delim)
 {
-	int i, j, k, n, len;
+int i, j, k, m, num_words = 0;
+char **words;
+if (str == NULL || str[0] == 0)
+return (NULL);
+if (!delim)
+delim = " ";
+for (i = 0; str[i]; i++)
+if (!is_delim(str[i], delim) && (is_delim(str[i + 1], delim) || !str[i + 1]))
+num_words++;
 
-	char **words;
+if (num_words == 0)
+return (NULL);
 
-	len = 0;
-	for (i = 0; str[i] != '\0'; i++)
-	{
-		if (str[i] != delim)
-		{
-			len++;
-			for ( ; str[i] != delim && str[i] != '\0'; i++)
-				;
-		}
-	}
-	words = malloc(sizeof(char *) * (len + 1));
-	if (words == NULL)
-		return (NULL);
-	for (i = 0, j = 0; j < len; i++)
-	{
-		if (str[i] != delim)
-		{
-			n = 0;
-			for (k = i; str[k] != delim && str[k] != '\0'; k++)
-				n++;
-			words[j] = malloc(sizeof(char) * (n + 1));
-			if (words[j] == NULL)
-			{
-				for (j--; j >= 0; j--)
-					free(words[j]);
-				free(words);
-				return (NULL);
-			}
-			for (k = 0; k < n; k++, i++)
-				words[j][k] = str[i];
-			words[j][k] = '\0';
-			j++;
-		}
-	}
-	words[j] = NULL;
-	return (words);
+words = malloc(sizeof(char *) * (num_words + 1));
+if (words == NULL)
+return (NULL);
+for (i = 0, j = 0; j < num_words; j++)
+{
+while (is_delim(str[i], delim))
+i++;
+k = 0;
+while (!is_delim(str[i + k], delim) && str[i + k])
+k++;
+words[j] = malloc((k + 1) * sizeof(char));
+if (words[j] == NULL)
+{
+for (k = 0; k < j; k++)
+free(words[k]);
+free(words);
+return (NULL);
+}
+for (m = 0; m < k; m++)
+words[j][m] = str[i++];
+words[j][m] = 0;
+}
+words[j] = NULL;
+return (words);
 }

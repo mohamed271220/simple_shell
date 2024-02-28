@@ -10,26 +10,23 @@
 int _myexit(passinfo_t *info)
 {
 
-int ret = -2;
-
-int flag;
-
+int exit_status = 0;
 if (info->argv[1])
 {
-flag = _atoi(info->argv[1]);
-if (flag < 0)
+exit_status = _erratoi(info->argv[1]);
+if (exit_status == -1)
 {
-info->status = 2;
-print_error(info, "Illegal number: ");
+info->error = 2;
+print_error(info, "exit: Illegal number: ");
 _puts(info->argv[1]);
 _puts("\n");
-return (0);
+return (1);
 }
-info->error = _atoi(info->argv[1]);
-return (ret);
+info->error = _erratoi(info->argv[1]);
+return (-2);
 }
 info->error = -1;
-return (ret);
+return (-2);
 }
 
 /**
@@ -40,44 +37,46 @@ return (ret);
 
 int _cd(passinfo_t *info)
 {
-	char *home = get_env(info, "HOME=");
-
-	char *oldpwd = get_env(info, "PWD=");
-
-	char *pwd = NULL;
-
-	int ret = 1;
-
-	if (!info->argv[1] || _strcmp(info->argv[1], "~") == 0)
-	{
-		if (home)
-			ret = chdir(home);
-	}
-	else if (_strcmp(info->argv[1], "-") == 0)
-	{
-		if (oldpwd)
-			ret = chdir(oldpwd);
-	}
-	else
-		ret = chdir(info->argv[1]);
-	if (ret == -1)
-	{
-		info->error = 1;
-		_puts("cd: can't cd to ");
-		_puts(info->argv[1]);
-		_puts("\n");
-	}
-	else
-	{
-		pwd = getcwd(NULL, 0);
-		if (pwd)
-		{
-			_set_env(info, "PWD", pwd);
-			free(pwd);
-		}
-	}
-	return (ret);
+char *s, *dir, buffer[1024];
+int ret;
+s = getcwd(buffer, 1024);
+if (!s)
+_puts("Error getting current directory\n");
+if (!info->argv[1])
+{
+dir = get_env(info, "HOME=");
+if (!dir)
+ret = chdir((dir = get_env(info, "PWD=")) ? dir : "/");
+else
+ret = chdir(dir);
 }
+else if (_strcmp(info->argv[1], "-") == 0)
+{
+if (!get_env(info, "OLDPWD="))
+{
+_puts(s);
+_puts("\n");
+return (1);
+}
+_puts(get_env(info, "OLDPWD=")), _puts("\n");
+ret = chdir((dir = get_env(info, "OLDPWD=")) ? dir : "/");
+}
+else
+ret = chdir(info->argv[1]);
+if (ret == -1)
+{
+print_error(info, "cd: can't cd to ");
+_eputs(info->argv[1]);
+_eputchar('\n');
+}
+else
+{
+_set_env(info, "OLDPWD", get_env(info, "PWD="));
+_set_env(info, "PWD", getcwd(buffer, 1024));
+}
+return (0);
+}
+
 
 /**
 * _help - prints the help

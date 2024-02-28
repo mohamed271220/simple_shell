@@ -66,12 +66,14 @@ int find_built_in(passinfo_t *info)
 	};
 
 	for (i = 0; builtins[i].name; i++)
+	{
 		if (_strcmp(info->argv[0], builtins[i].name) == 0)
 		{
 			info->line++;
 			ret = builtins[i].func(info);
 			break;
 		}
+	}
 
 	return (ret);
 }

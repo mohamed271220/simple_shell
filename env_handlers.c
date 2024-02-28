@@ -41,7 +41,7 @@ while (env)
 ptr = starts_with(env->str, name);
 if (ptr && *ptr == '=')
 {
-info->env_changed = delete_node_at_index(&info->env, i);
+info->env_changed = delete_node_at_index(&(info->env), i);
 i = 0;
 env = info->env;
 continue;
