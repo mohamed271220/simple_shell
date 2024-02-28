@@ -23,7 +23,7 @@ ssize_t input_buffer(passinfo_t *info, char **buffer, size_t *size)
 		#else
 		bytes = _getline(info, buffer, &i);
 		#endif
-		if (bytes > 0)
+		if (bytes > 0 && *buffer != NULL)
 		{
 			if ((*buffer)[bytes - 1] == '\n')
 			{
@@ -74,12 +74,15 @@ ssize_t get_input(passinfo_t *info)
 
 	_putchar(BUFFER_FLUSH);
 	bytes = input_buffer(info, &buffer, &len);
-	if (bytes == -1)
+	if (bytes <= 0)
+	{
 		return (-1);
+	}
 	if (len)
 	{
 		j = i;
-		ptr = buffer + i;
+		if (buffer != NULL)
+			ptr = buffer + i;
 		exec_chained(info, buffer, &j, i, len);
 		while (j < len)
 		{

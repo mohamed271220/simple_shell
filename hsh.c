@@ -19,10 +19,12 @@ if (is_sh_mode(info))
 _puts("$ ");
 _eputchar(BUFFER_FLUSH);
 read = get_input(info);
+printf("read: %ld\n", read);
 if (read != -1)
 {
 set_info(info, argv);
 built_in = find_built_in(info);
+printf("built_in: %d\n", built_in);
 if (built_in == -1)
 find_cmd(info);
 }
@@ -51,31 +53,37 @@ return (built_in);
 
 int find_built_in(passinfo_t *info)
 {
-int i = 0, ret = -1;
-builtins_t builtins[] = {
-{"exit", _myexit},
-{"env", print_env},
-{"setenv", set_env},
-{"unsetenv", remove_env},
-{"cd", _cd},
-{"alias", _alias},
-{"history", show_history},
-{"help", _help},
-{NULL, NULL}
-};
+	int i = 0, ret = -1;
 
-for (i = 0; builtins[i].name; i++)
-{
-if (_strcmp(info->argv[0], builtins[i].name) == 0)
-{
-info->line++;
-ret = builtins[i].func(info);
-break;
-}
-}
+	builtins_t builtins[] = {
+		{"exit", _myexit},
+		{"env", print_env},
+		{"setenv", set_env},
+		{"unsetenv", remove_env},
+		{"cd", _cd},
+		{"alias", _alias},
+		{"history", show_history},
+		{"help", _help},
+		{NULL, NULL}
+	};
 
+if (info == NULL || info->argv == NULL || info->argv[0] == NULL)
+{
+printf(info->argv, info->argv[0]);
 return (ret);
+}
 
+	for (i = 0; builtins[i].name; i++)
+	{
+		if (_strcmp(info->argv[0], builtins[i].name) == 0)
+		{
+			info->line++;
+			ret = builtins[i].func(info);
+			break;
+		}
+	}
+
+	return (ret);
 }
 
 /**
@@ -86,42 +94,46 @@ return (ret);
 
 void find_cmd(passinfo_t *info)
 {
-char *path = NULL;
-int i, k;
-info->path = info->argv[0];
+	char *path = NULL;
 
-if (info->line_flag == 1)
-{
-info->line++;
-info->line_flag = 0;
-}
+	int i, k;
 
-for (i = 0, k = 0; info->arg[i]; i++)
-if (!is_delim(info->arg[i], " \t\n"))
-k++;
+	if (info == NULL || info->argv == NULL || info->argv[0] == NULL)
+		return;
 
-if (!k)
-return;
+	info->path = info->argv[0];
 
-path = find_path(info, get_env(info, "PATH="), info->argv[0]);
-if (path)
-{
-info->path = path;
-fork_cmd(info);
-}
-else
-{
-if ((is_sh_mode(info) || get_env(info, "PATH=")
-|| info->argv[0][0] == '/') && is_executable(info, info->argv[0]))
-fork_cmd(info);
-else if (*(info->arg) != '\n')
-{
-info->status = 127;
-print_error(info, "not found\n");
-}
-}
-}
+	if (info->line_flag == 1)
+	{
+		info->line++;
+		info->line_flag = 0;
+	}
 
+	for (i = 0, k = 0; info->arg[i]; i++)
+		if (!is_delim(info->arg[i], " \t\n"))
+			k++;
+
+	if (!k)
+		return;
+
+	path = find_path(info, get_env(info, "PATH="), info->argv[0]);
+	if (path)
+	{
+		info->path = path;
+		fork_cmd(info);
+	}
+	else
+	{
+		if ((is_sh_mode(info) || get_env(info, "PATH=")
+			|| info->argv[0][0] == '/') && is_executable(info, info->argv[0]))
+			fork_cmd(info);
+		else if (*(info->arg) != '\n')
+		{
+			info->status = 127;
+			print_error(info, "not found\n");
+		}
+	}
+}
 
 /**
 * fork_cmd - fork command
@@ -131,31 +143,36 @@ print_error(info, "not found\n");
 
 void fork_cmd(passinfo_t *info)
 {
-pid_t pid;
-pid = fork();
-if (pid == -1)
-{
-_eputs("Error: fork failed\n");
-return;
-}
-if (pid == 0)
-{
-if (execve(info->path, info->argv, info->environ) == -1)
-{
-free_info(info, 1);
-if (errno == EACCES)
-exit(126);
-exit(1);
-}
-}
-else
-{
-wait(&info->status);
-if (WIFEXITED(info->status))
-{
-info->status = WEXITSTATUS(info->status);
-if (info->status == 126)
-print_error(info, "Permission denied\n");
-}
-}
+	pid_t pid;
+
+	if (info->path == NULL ||
+	info->argv == NULL || info->environ == NULL)
+		return;
+
+	pid = fork();
+	if (pid == -1)
+	{
+		_eputs("Error: fork failed\n");
+		return;
+	}
+	if (pid == 0)
+	{
+		if (execve(info->path, info->argv, info->environ) == -1)
+		{
+			free_info(info, 1);
+			if (errno == EACCES)
+				exit(126);
+			exit(1);
+		}
+	}
+	else
+	{
+		wait(&info->status);
+		if (WIFEXITED(info->status))
+		{
+			info->status = WEXITSTATUS(info->status);
+			if (info->status == 126)
+				print_error(info, "Permission denied\n");
+		}
+	}
 }
