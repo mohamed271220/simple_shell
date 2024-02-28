@@ -30,37 +30,33 @@ _eputs(msg);
 int print_decimal(int n, int fd)
 {
 int (*__putchar)(char) = _putchar;
-unsigned int num;
-unsigned int num2;
-int i;
-int c = 0;
+int i, count = 0;
+unsigned int _abs_, current;
+
 if (fd == STDERR_FILENO)
-{
 __putchar = _eputchar;
-}
 if (n < 0)
 {
-num = -n;
+_abs_ = -n;
 __putchar('-');
-c++;
+count++;
 }
 else
+_abs_ = n;
+current = _abs_;
+for (i = 1000000000; i > 1; i /= 10)
 {
-num = n;
-}
-num2 = num;
-for (i = 1000000000; i > 0; i /= 10)
+if (_abs_ / i)
 {
-if (num2 / i != 0)
-{
-__putchar((num2 / i) + '0');
-c++;
+__putchar('0' + current / i);
+count++;
 }
-num2 %= i;
+current %= i;
 }
-__putchar(num2 + '0');
-c++;
-return (c);
+__putchar('0' + current);
+count++;
+
+return (count);
 }
 
 /**

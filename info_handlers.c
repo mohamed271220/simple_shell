@@ -28,7 +28,6 @@ info->file_name = argv[0];
 if (info->arg)
 {
 info->argv = _strtow(info->arg, " \t");
-info->argc = i;
 if (!info->argv)
 {
 info->argv = malloc(sizeof(char *) * 2);
@@ -41,7 +40,7 @@ info->argv[1] = NULL;
 for (i = 0; info->argv[i]; i++)
 ;
 info->argc = i;
-set_alias(info, info->argv[0]);
+change_alias(info);
 replace_vars(info);
 }
 }
@@ -57,16 +56,16 @@ void free_info(passinfo_t *info, int free_env)
 {
 _free(info->argv);
 info->argv = NULL;
-info->argc = 0;
+info->path = NULL;
 if (free_env)
 {
-if (!info->env)
-free_list(&(info->env));
 if (!info->cmd)
 free(info->arg);
-if (!info->history)
+if (info->env)
+free_list(&(info->env));
+if (info->history)
 free_list(&(info->history));
-if (!info->alias)
+if (info->alias)
 free_list(&(info->alias));
 _free(info->environ);
 info->environ = NULL;

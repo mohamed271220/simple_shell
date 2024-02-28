@@ -133,7 +133,6 @@ return (bytes);
 int _getline(passinfo_t *info, char **ptr, size_t *len)
 {
 static char buffer[READ_BUFFER];
-
 static size_t i, l;
 size_t j = 0;
 ssize_t bytes = 0, read = 0;
@@ -154,7 +153,11 @@ j = c ? 1 + (unsigned int)(c - buffer) : l;
 
 new_ptr = _realloc(tmp, bytes, bytes ? bytes + j : j + 1);
 if (!new_ptr)
-return (tmp ? free(tmp), -1 : -1);
+{
+if (tmp)
+free(tmp);
+return (-1);
+}
 
 if (bytes)
 _strncat(new_ptr, buffer + i, j - i);

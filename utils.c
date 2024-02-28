@@ -48,21 +48,30 @@ return (0);
 
 int _atoi(char *s)
 {
-int sign = 1;
+int i, sign = 1, fg = 0, ret;
+unsigned int result = 0;
 
-unsigned int num = 0;
-
-while (*s)
+for (i = 0;  s[i] != '\0' && fg != 2; i++)
 {
-if (*s == '-')
+if (s[i] == '-')
 sign *= -1;
-if (*s >= '0' && *s <= '9')
-num = num * 10 + (*s - '0');
-else if (num > 0)
-break;
-s++;
+
+if (s[i] >= '0' && s[i] <= '9')
+{
+fg = 1;
+result *= 10;
+result += (s[i] - '0');
 }
-return (sign *num);
+else if (fg == 1)
+fg = 2;
+}
+
+if (sign == -1)
+ret = -result;
+else
+ret = result;
+
+return (ret);
 }
 
 /**
@@ -72,30 +81,22 @@ return (sign *num);
 */
 int _erratoi(char *s)
 {
-int sign = 1;
+int i = 0;
+unsigned long int ret = 0;
 
-unsigned long int num = 0;
-
-int digit;
-
-while (*s)
-{
-if (*s == '-')
-sign *= -1;
-if (*s >= '0' && *s <= '9')
-{
-digit = *s - '0';
-if (sign > 0 && (num > INT_MAX / 10 ||
-(num == INT_MAX / 10 && digit > INT_MAX % 10)))
-return (-1);
-if (sign < 0 && (num > (unsigned int)INT_MIN / 10 ||
-(num == (unsigned int)INT_MIN / 10 &&
-(unsigned int)digit > (unsigned int)INT_MIN % 10)))
-
-return (-1);
-num = num * 10 + digit;
-}
+if (*s == '+')
 s++;
+for (i = 0;  s[i] != '\0'; i++)
+{
+if (s[i] >= '0' && s[i] <= '9')
+{
+ret *= 10;
+ret += (s[i] - '0');
+if (ret > INT_MAX)
+return (-1);
 }
-return (sign *num);
+else
+return (-1);
+}
+return (ret);
 }

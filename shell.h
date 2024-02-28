@@ -3,16 +3,14 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <unistd.h>
-#include <sys/wait.h>
+#include <string.h>
 #include <sys/types.h>
+#include <sys/wait.h>
 #include <sys/stat.h>
-#include <fcntl.h>
+#include <limits.h>
 #include <fcntl.h>
 #include <errno.h>
-#include <limits.h>
-
 
 
 #define READ_BUFFER 1024
@@ -233,7 +231,7 @@ list_t *add_node_end(list_t **head, char *str, int num);
 size_t print_list(list_t *head);
 list_t *node_starts_with(list_t *head, char *start, char c);
 char **list_to_array(list_t *head);
-size_t node_by_index(list_t *head, list_t *target);
+ssize_t node_by_index(list_t *head, list_t *target);
 int delete_node_at_index(list_t **head, unsigned int index);
 
 /* error handlers */

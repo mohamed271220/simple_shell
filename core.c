@@ -18,8 +18,8 @@ if (exit_status == -1)
 {
 info->error = 2;
 print_error(info, "exit: Illegal number: ");
-_puts(info->argv[1]);
-_puts("\n");
+_eputs(info->argv[1]);
+_eputchar('\n');
 return (1);
 }
 info->error = _erratoi(info->argv[1]);
@@ -55,10 +55,10 @@ else if (_strcmp(info->argv[1], "-") == 0)
 if (!get_env(info, "OLDPWD="))
 {
 _puts(s);
-_puts("\n");
+_putchar('\n');
 return (1);
 }
-_puts(get_env(info, "OLDPWD=")), _puts("\n");
+_puts(get_env(info, "OLDPWD=")), _putchar('\n');
 ret = chdir((dir = get_env(info, "OLDPWD=")) ? dir : "/");
 }
 else

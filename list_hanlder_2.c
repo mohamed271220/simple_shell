@@ -9,32 +9,33 @@
 
 int delete_node_at_index(list_t **head, unsigned int index)
 {
-list_t *current;
-list_t *next;
-unsigned int i;
-
-if (*head == NULL)
-return (-1);
-if (index == 0)
+list_t *node, *prev;
+unsigned int i = 0;
+if (!head || !*head)
+return (0);
+if (!index)
 {
-next = (*head)->next;
-free((*head)->str);
-free(*head);
-*head = next;
+node = *head;
+*head = (*head)->next;
+free(node->str);
+free(node);
 return (1);
 }
-current = *head;
-for (i = 0; i < index - 1; i++)
+node = *head;
+while (node)
 {
-if (current->next == NULL)
-return (-1);
-current = current->next;
-}
-next = current->next;
-current->next = next->next;
-free(next->str);
-free(next);
+if (i == index)
+{
+prev->next = node->next;
+free(node->str);
+free(node);
 return (1);
+}
+i++;
+prev = node;
+node = node->next;
+}
+return (0);
 }
 
 /**
@@ -45,36 +46,30 @@ return (1);
 
 char **list_to_array(list_t *head)
 {
-char **array;
-
-list_t *current;
-int i;
-
-unsigned int len;
-
-if (head == NULL)
+list_t *node = head;
+size_t i = list_len(head), j;
+char **strs;
+char *str;
+if (!head || !i)
 return (NULL);
-current = head;
-for (len = 0; current != NULL; len++)
-current = current->next;
-array = malloc(sizeof(char *) * (len + 1));
-if (array == NULL)
+strs = malloc(sizeof(char *) * (i + 1));
+if (!strs)
 return (NULL);
-current = head;
-for (i = 0; i < (int)len; i++)
+for (i = 0; node; node = node->next, i++)
 {
-array[i] = _strdup(current->str);
-if (array[i] == NULL)
+str = malloc(_strlen(node->str) + 1);
+if (!str)
 {
-for (i--; i >= 0; i--)
-free(array[i]);
-free(array);
+for (j = 0; j < i; j++)
+free(strs[j]);
+free(strs);
 return (NULL);
 }
-current = current->next;
+str = _strcpy(str, node->str);
+strs[i] = str;
 }
-array[i] = NULL;
-return (array);
+strs[i] = NULL;
+return (strs);
 }
 
 
@@ -111,7 +106,7 @@ list_t *node_starts_with(list_t *head, char *start, char c)
 {
 char *ptr = NULL;
 
-while (head != NULL)
+while (head)
 {
 ptr = starts_with(head->str, start);
 if (ptr && (c == '\0' || *ptr == c))
@@ -128,7 +123,7 @@ return (NULL);
 * Return: pointer to the node, or -1 if it failed
 */
 
-size_t node_by_index(list_t *head, list_t *target)
+ssize_t node_by_index(list_t *head, list_t *target)
 {
 size_t i = 0;
 while (head)

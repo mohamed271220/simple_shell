@@ -89,9 +89,6 @@ void find_cmd(passinfo_t *info)
 char *path = NULL;
 int i, k;
 
-if (info == NULL || info->argv == NULL || info->argv[0] == NULL)
-return;
-
 info->path = info->argv[0];
 
 if (info->line_flag == 1)
@@ -135,10 +132,6 @@ info->status = 127;
 void fork_cmd(passinfo_t *info)
 {
 pid_t pid;
-
-if (info->path == NULL ||
-info->argv == NULL || info->environ == NULL)
-return;
 
 pid = fork();
 if (pid == -1)

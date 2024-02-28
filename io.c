@@ -31,10 +31,8 @@ return (hf);
 
 int w_history(passinfo_t *info)
 {
-int fd;
-
+ssize_t fd;
 char *file_name = get_hf(info);
-
 list_t *history = NULL;
 if (!file_name)
 return (-1);
@@ -65,7 +63,6 @@ int fd;
 size_t read_len, fsize = 0;
 struct stat st;
 char *file_name = get_hf(info);
-
 char *buffer = NULL;
 
 if (!file_name)
@@ -84,7 +81,8 @@ return (0);
 read_len = read(fd, buffer, fsize);
 buffer[fsize] = 0;
 if (read_len <= 0)
-return (free(buffer), close(fd), 0);
+return (free(buffer), 0);
+close(fd);
 for (i = 0; i < (int)fsize; i++)
 if (buffer[i] == '\n')
 {

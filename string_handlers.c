@@ -28,15 +28,14 @@ int len = 0;
 char *dup;
 if (str == NULL)
 return (NULL);
-while (str[len])
+while (*str++)
 len++;
 dup = malloc(sizeof(char) * (len + 1));
-if (!dup)
+if (dup == NULL)
 return (NULL);
 for (len++; len--;)
 dup[len] = *--str;
 return (dup);
-
 }
 
 /**
@@ -48,7 +47,7 @@ return (dup);
 
 int _strcmp(char *s1, char *s2)
 {
-while (*s1 && *s2 && *s1 == *s2)
+while (*s1 && *s2)
 {
 if (*s1 != *s2)
 return (*s1 - *s2);
@@ -73,10 +72,14 @@ return (*s1 < *s2 ? -1 : 1);
 
 char *_strcpy(char *dest, char *src)
 {
-int i;
-
-for (i = 0; src[i] != '\0'; i++)
+int i = 0;
+if (dest == src || src == 0)
+return (dest);
+while (src[i])
+{
 dest[i] = src[i];
-dest[i] = '\0';
+i++;
+}
+dest[i] = 0;
 return (dest);
 }

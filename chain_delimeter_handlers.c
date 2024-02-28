@@ -47,24 +47,26 @@ return (1);
 void exec_chained(passinfo_t *info, char *cmd, size_t *path,
 size_t i, size_t len)
 {
-size_t path_size = *path;
+size_t j = *path;
+
+if (info->cmdtype == CMD_AND)
+{
+if (info->status)
+{
+cmd[i] = 0;
+j = len;
+}
+}
 if (info->cmdtype == CMD_OR)
 {
 if (!info->status)
 {
 cmd[i] = 0;
-path_size = len;
+j = len;
 }
 }
-else if (info->cmdtype == CMD_AND)
-{
-if (info->status)
-{
-cmd[i] = 0;
-path_size = len;
-}
-}
-*path = path_size;
+
+*path = j;
 }
 
 /**

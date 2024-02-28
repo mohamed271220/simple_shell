@@ -43,13 +43,24 @@ return (NULL);
 
 char *_strncpy(char *dest, char *src, int n)
 {
-int i;
-
-for (i = 0; i < n && src[i] != '\0'; i++)
+int i, j;
+char *s = dest;
+i = 0;
+while (src[i] != '\0' && i < n - 1)
+{
 dest[i] = src[i];
-for ( ; i < n; i++)
-dest[i] = '\0';
-return (dest);
+i++;
+}
+if (i < n)
+{
+j = i;
+while (j < n)
+{
+dest[j] = '\0';
+j++;
+}
+}
+return (s);
 }
 
 

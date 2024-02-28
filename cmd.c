@@ -82,6 +82,5 @@ j = i;
 }
 i++;
 }
-
 return (NULL);
 }

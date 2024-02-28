@@ -32,7 +32,7 @@ if (errno == ENOENT)
 _eputs(argv[0]);
 _eputs(": 0: Can't open ");
 _eputs(argv[1]);
-_eputs("\n");
+_eputchar('\n');
 _eputchar(BUFFER_FLUSH);
 exit(127);
 }
