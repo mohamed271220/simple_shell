@@ -15,7 +15,6 @@ ssize_t input_buffer(passinfo_t *info, char **buffer, size_t *size)
 
 	if (!*size)
 	{
-		free(*buffer);
 		*buffer = NULL;
 		signal(SIGINT, signalHandler);
 		#if USE_GETLINE
@@ -94,11 +93,9 @@ ssize_t get_input(passinfo_t *info)
 			info->cmdtype = CMD_NORMAL;
 		}
 		*buf_ptr = ptr;
-		printf("info->arg:(iipu) %s\n", info->arg);
 		return (_strlen(ptr));
 	}
 	*buf_ptr = buffer;
-	printf("info->arg:(iin) %s\n", info->arg);
 	return (bytes);
 }
 
@@ -157,7 +154,7 @@ int _getline(passinfo_t *info, char **ptr, size_t *len)
 
 	new_ptr = _realloc(tmp, bytes, bytes ? bytes + j : j + 1);
 	if (!new_ptr)
-		return (-1);
+		return (tmp ? free(tmp), -1 : -1);
 
 	if (bytes)
 		_strncat(new_ptr, buffer + i, j - i);
