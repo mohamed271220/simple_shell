@@ -19,7 +19,6 @@ if (is_sh_mode(info))
 _puts("$ ");
 _eputchar(BUFFER_FLUSH);
 read = get_input(info);
-printf("read: %ld\n", read);
 if (read != -1)
 {
 set_info(info, argv);
@@ -52,7 +51,7 @@ return (built_in);
 
 int find_built_in(passinfo_t *info)
 {
-	int i = 0, ret = -1;
+	int i, ret = -1;
 
 	builtins_t builtins[] = {
 		{"exit", _myexit},
@@ -66,19 +65,13 @@ int find_built_in(passinfo_t *info)
 		{NULL, NULL}
 	};
 
-if (info == NULL || info->argv == NULL || info->argv[0] == NULL)
-return (ret);
-
-
 	for (i = 0; builtins[i].name; i++)
-	{
 		if (_strcmp(info->argv[0], builtins[i].name) == 0)
 		{
 			info->line++;
 			ret = builtins[i].func(info);
 			break;
 		}
-	}
 
 	return (ret);
 }
@@ -92,7 +85,6 @@ return (ret);
 void find_cmd(passinfo_t *info)
 {
 	char *path = NULL;
-
 	int i, k;
 
 	if (info == NULL || info->argv == NULL || info->argv[0] == NULL)
@@ -107,11 +99,11 @@ void find_cmd(passinfo_t *info)
 	}
 
 	for (i = 0, k = 0; info->arg[i]; i++)
-		if (!is_delim(info->arg[i], " \t\n"))
-			k++;
+	if (!is_delim(info->arg[i], " \t\n"))
+	k++;
 
 	if (!k)
-		return;
+	return;
 
 	path = find_path(info, get_env(info, "PATH="), info->argv[0]);
 	if (path)
@@ -122,12 +114,12 @@ void find_cmd(passinfo_t *info)
 	else
 	{
 		if ((is_sh_mode(info) || get_env(info, "PATH=")
-			|| info->argv[0][0] == '/') && is_executable(info, info->argv[0]))
-			fork_cmd(info);
+		|| info->argv[0][0] == '/') && is_executable(info, info->argv[0]))
+		fork_cmd(info);
 		else if (*(info->arg) != '\n')
 		{
-			info->status = 127;
 			print_error(info, "not found\n");
+			info->status = 127;
 		}
 	}
 }
@@ -154,7 +146,7 @@ void fork_cmd(passinfo_t *info)
 	}
 	if (pid == 0)
 	{
-		if (execve(info->path, info->argv, info->environ) == -1)
+		if (execve(info->path, info->argv, get_environ(info)) == -1)
 		{
 			free_info(info, 1);
 			if (errno == EACCES)
@@ -164,7 +156,7 @@ void fork_cmd(passinfo_t *info)
 	}
 	else
 	{
-		wait(&info->status);
+		wait(&(info->status));
 		if (WIFEXITED(info->status))
 		{
 			info->status = WEXITSTATUS(info->status);

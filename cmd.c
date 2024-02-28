@@ -28,20 +28,14 @@ int is_executable(passinfo_t *info, char *path)
 
 char *mul_path(char *path, int start, int end)
 {
-	char *new_path = malloc(1024 * sizeof(char));
-
-	int i = 0, j = 0;
-
-	if (!new_path)
-		return (NULL);
-	for (i = 0; i < start; i++)
-		if (path[i] != ':')
-			new_path[j++] = path[i];
-	new_path[j++] = '/';
-	for (i = start; i < end; i++)
-		new_path[j++] = path[i];
-	new_path[j] = '\0';
-	return (new_path);
+static char new_path[1024];
+int i = 0;
+int k = 0;
+for (k = 0, i = start; k < end; i++)
+if (path[i] != ':')
+new_path[k] = path[i];
+new_path[k] = 0;
+return (new_path);
 }
 
 /**
@@ -60,14 +54,16 @@ char *find_path(passinfo_t *info, char *path, char *cmd)
 
 	if (!path)
 		return (NULL);
+
 	if ((_strlen(cmd) > 2) && starts_with(cmd, "./"))
 	{
 		if (is_executable(info, cmd))
 			return (cmd);
 	}
+
 	while (1)
 	{
-		if (path[i] == ':' || path[i] == '\0')
+		if (path[i] == ':' || !path[i])
 		{
 			new_path = mul_path(path, j, i);
 			if (!*new_path)
@@ -77,13 +73,15 @@ char *find_path(passinfo_t *info, char *path, char *cmd)
 				_strcat(new_path, "/");
 				_strcat(new_path, cmd);
 			}
+
 			if (is_executable(info, new_path))
 				return (new_path);
-			if (path[i] == '\0')
+			if (!path[i])
 				break;
 			j = i;
 		}
 		i++;
 	}
+
 	return (NULL);
 }

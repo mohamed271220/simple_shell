@@ -33,7 +33,7 @@
 #define HISTORY_FILE ".shell_history"
 #define HISTORY_SIZE 4096
 
-extern char *history[HISTORY_SIZE];
+
 
 extern char **environ;
 
@@ -125,9 +125,7 @@ NULL, 0, NULL, 0, 0, 0, NULL, 0, NULL, NULL, 0, 0}
 typedef struct builtins
 {
 	char *name;
-
 	int (*func)(passinfo_t *);
-
 } builtins_t;
 
 /* _putchar */
