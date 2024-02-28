@@ -62,7 +62,7 @@ else if (num > 0)
 break;
 s++;
 }
-return (sign * num);
+return (sign *num);
 }
 
 /**
@@ -97,5 +97,5 @@ num = num * 10 + digit;
 }
 s++;
 }
-return (sign * num);
+return (sign *num);
 }
