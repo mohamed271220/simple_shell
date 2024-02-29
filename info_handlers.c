@@ -65,7 +65,7 @@ void free_info(passinfo_t *info, int free_env)
 		if (info->alias)
 			free_list(&(info->alias));
 		_free(info->environ);
-		info->environ = NULL;
+			info->environ = NULL;
 		_free2((void **)info->cmd);
 		if (info->read_fd > 2)
 			close(info->read_fd);

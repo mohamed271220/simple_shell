@@ -9,38 +9,38 @@
 
 int hsh(passinfo_t *info, char **argv)
 {
-ssize_t read = 0;
-int built_in = 0;
+	ssize_t r = 0;
+	int builtin_ret = 0;
 
-while (read != -1 && built_in != -2)
-{
-clear(info);
-if (is_sh_mode(info))
-_puts("$ ");
-_eputchar(BUFFER_FLUSH);
-read = get_input(info);
-if (read != -1)
-{
-set_info(info, argv);
-built_in = find_built_in(info);
-if (built_in == -1)
-find_cmd(info);
-}
-else if (is_sh_mode(info))
-_putchar('\n');
-free_info(info, 0);
-}
-w_history(info);
-free_info(info, 1);
-if (info->status && !is_sh_mode(info))
-exit(info->status);
-if (built_in == -2)
-{
-if (info->error == -1)
-exit(info->status);
-exit(info->error);
-}
-return (built_in);
+	while (r != -1 && builtin_ret != -2)
+	{
+		clear(info);
+		if (is_sh_mode(info))
+			_puts("$ ");
+		_eputchar(BUFFER_FLUSH);
+		r = get_input(info);
+		if (r != -1)
+		{
+			set_info(info, argv);
+			builtin_ret = find_built_in(info);
+			if (builtin_ret == -1)
+				find_cmd(info);
+		}
+		else if (is_sh_mode(info))
+			_putchar('\n');
+		free_info(info, 0);
+	}
+	w_history(info);
+	free_info(info, 1);
+	if (!is_sh_mode(info) && info->status)
+		exit(info->status);
+	if (builtin_ret == -2)
+	{
+		if (info->error == -1)
+			exit(info->status);
+		exit(info->error);
+	}
+	return (builtin_ret);
 }
 
 /**
@@ -87,6 +87,7 @@ return (ret);
 void find_cmd(passinfo_t *info)
 {
 char *path = NULL;
+
 int i, k;
 
 info->path = info->argv[0];

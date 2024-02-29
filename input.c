@@ -11,36 +11,36 @@
 
 ssize_t input_buffer(passinfo_t *info, char **buffer, size_t *size)
 {
-ssize_t bytes = 0;
-size_t i = 0;
+ssize_t r = 0;
+	size_t len_p = 0;
 
-if (!*size)
-{
-*buffer = NULL;
-signal(SIGINT, signalHandler);
+	if (!*size)
+	{
+		free(*buffer);
+		*buffer = NULL;
+		signal(SIGINT, signalHandler);
 #if USE_GETLINE
-bytes = getline(buffer, &i, stdin);
+		r = getline(buffer, &len_p, stdin);
 #else
-bytes = _getline(info, buffer, &i);
+		r = _getline(info, buffer, &len_p);
 #endif
-if (bytes > 0)
-{
-if ((*buffer)[bytes - 1] == '\n')
-{
-(*buffer)[bytes - 1] = '\0';
-bytes--;
-}
-info->line_flag = 1;
-remove_comments(*buffer);
-convert_to_list(info, *buffer, info->history_count++);
-/*if (_strchr(*buffer, '\n'))*/
-{
-*size = bytes;
-info->cmd = buffer;
-}
-}
-}
-return (bytes);
+		if (r > 0)
+		{
+			if ((*buffer)[r - 1] == '\n')
+			{
+				(*buffer)[r - 1] = '\0';
+				r--;
+			}
+			info->line_flag = 1;
+			remove_comments(*buffer);
+			convert_to_list(info, *buffer, info->history_count++);
+			{
+				*size = r;
+				info->cmd = buffer;
+			}
+		}
+	}
+	return (r);
 }
 
 
@@ -66,37 +66,41 @@ _putchar(BUFFER_FLUSH);
 
 ssize_t get_input(passinfo_t *info)
 {
-static char *buffer;
-static size_t i, j, len;
-ssize_t bytes = 0;
-char **buf_ptr = &(info->arg), *ptr;
+	static char *buf;
+	static size_t i, j, len;
+	ssize_t r = 0;
+	char **buf_p = &(info->arg), *p;
 
-_putchar(BUFFER_FLUSH);
-bytes = input_buffer(info, &buffer, &len);
-if (bytes == -1)
-return (-1);
-if (len)
-{
-j = i;
-ptr = buffer + i;
-exec_chained(info, buffer, &j, i, len);
-while (j < len)
-{
-if (is_chained(info, buffer, &j))
-break;
-j++;
-}
-i = j + 1;
-if (i >= len)
-{
-i = len = 0;
-info->cmdtype = CMD_NORMAL;
-}
-*buf_ptr = ptr;
-return (_strlen(ptr));
-}
-*buf_ptr = buffer;
-return (bytes);
+	_putchar(BUFFER_FLUSH);
+	r = input_buffer(info, &buf, &len);
+	if (r == -1)
+		return (-1);
+	if (len)
+	{
+		j = i;
+		p = buf + i;
+
+		exec_chained(info, buf, &j, i, len);
+		while (j < len)
+		{
+			if (is_chained(info, buf, &j))
+				break;
+			j++;
+		}
+
+		i = j + 1;
+		if (i >= len)
+		{
+			i = len = 0;
+			info->cmd = CMD_NORMAL;
+		}
+
+		*buf_p = p;
+		return (_strlen(p));
+	}
+
+	*buf_p = buf;
+	return (r);
 }
 
 
@@ -132,42 +136,43 @@ return (bytes);
 
 int _getline(passinfo_t *info, char **ptr, size_t *len)
 {
-static char buffer[READ_BUFFER];
-static size_t i, l;
-size_t j = 0;
-ssize_t bytes = 0, read = 0;
-char *tmp = NULL, *new_ptr = NULL, *c;
+	static char buffer[READ_BUFFER];
+	static size_t i, l;
+	size_t j = 0;
+	ssize_t bytes = 0, read = 0;
+	char *tmp = NULL, *new_ptr = NULL, *c;
 
-tmp = *ptr;
-if (tmp && len)
-bytes = *len;
-if (i == l)
-i = l = 0;
+	tmp = *ptr;
+	if (tmp && len)
+		bytes = *len;
+	if (i == l)
+		i = l = 0;
+	read = read_buffer(info, buffer, &l);
+	if (read == -1 || (read == 0 && l == 0))
+	{
+		if (tmp)
+			free(tmp);
+		return (-1);
+	}
+	c = _strchr(buffer + i, '\n');
+	j = c ? 1 + (unsigned int)(c - buffer) : l;
 
-read = read_buffer(info, buffer, &l);
-if (read == -1 || (read == 0 && l == 0))
-return (-1);
-
-c = _strchr(buffer + i, '\n');
-j = c ? 1 + (unsigned int)(c - buffer) : l;
-
-new_ptr = _realloc(tmp, bytes, bytes ? bytes + j : j + 1);
-if (!new_ptr)
-{
-if (tmp)
-free(tmp);
-return (-1);
-}
-
-if (bytes)
-_strncat(new_ptr, buffer + i, j - i);
-else
-_strncpy(new_ptr, buffer + i, j - i + 1);
-bytes += j - i;
-i = j;
-tmp = new_ptr;
-if (len)
-*len = bytes;
-*ptr = tmp;
-return (bytes);
+	new_ptr = _realloc(tmp, bytes, bytes ? bytes + j : j + 1);
+	if (!new_ptr)
+	{
+		if (tmp)
+			free(tmp);
+		return (-1);
+	}
+	if (bytes)
+		_strncat(new_ptr, buffer + i, j - i);
+	else
+		_strncpy(new_ptr, buffer + i, j - i + 1);
+	bytes += j - i;
+	i = j;
+	tmp = new_ptr;
+	if (len)
+		*len = bytes;
+	*ptr = tmp;
+	return (bytes);
 }
