@@ -71,8 +71,8 @@ int _cd(passinfo_t *info)
 	}
 	else
 	{
-		_setenv(info, "OLDPWD", get_env(info, "PWD="));
-		_setenv(info, "PWD", getcwd(buffer, 1024));
+		_set_env(info, "OLDPWD", get_env(info, "PWD="));
+		_set_env(info, "PWD", getcwd(buffer, 1024));
 	}
 	return (0);
 }
