@@ -5,7 +5,6 @@
 * @head: pointer to the head of the list
 * @str: string to be added to the list
 * @num: number to be added to the list
-
 * Return: address of the new element, or NULL if it failed
 */
 
