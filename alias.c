@@ -125,8 +125,8 @@ if (!temp)
 {
 return (0);
 }
-alias = _strchr(temp->str, '=');
 free(info->argv[0]);
+alias = _strchr(temp->str, '=');
 if (!alias)
 {
 return (0);
